@@ -1,1 +1,2 @@
 # smartmbti
+안녕
