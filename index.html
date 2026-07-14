@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스마트 식물 MBTI 테스트</title>
+    <style>
+        body { font-family: 'Pretendard', sans-serif; background-color: #f7fcf5; color: #333; line-height: 1.6; margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { max-width: 500px; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        h1 { text-align: center; color: #2c7a4b; font-size: 24px; margin-bottom: 5px; }
+        .subtitle { text-align: center; color: #666; font-size: 14px; margin-bottom: 30px; }
+        .question-box { margin-bottom: 30px; display: none; }
+        .question-box.active { display: block; animation: fadeIn 0.5s; }
+        .q-title { font-size: 18px; font-weight: bold; margin-bottom: 15px; color: #2c7a4b; }
+        .btn-answer { display: block; width: 100%; background: #f0fdf4; border: 2px solid #dcfce7; border-radius: 12px; padding: 15px; margin-bottom: 10px; font-size: 15px; text-align: left; cursor: pointer; transition: 0.2s; }
+        .btn-answer:hover { background: #dcfce7; }
+        .result-box { display: none; text-align: center; animation: fadeIn 0.8s; }
+        .mbti-title { font-size: 28px; font-weight: bold; color: #2c7a4b; margin: 20px 0 10px; }
+        .plant-name { font-size: 20px; font-weight: bold; background: #dcfce7; display: inline-block; padding: 5px 15px; border-radius: 20px; margin-bottom: 15px; }
+        .succulent-box { background: #fffbeb; padding: 15px; border-radius: 12px; margin-top: 20px; text-align: left; font-size: 14px; }
+        .btn-restart { display: block; width: 100%; background: #2c7a4b; color: white; border: none; border-radius: 12px; padding: 15px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 30px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🌱 스마트 식물 MBTI</h1>
+    <p class="subtitle">나의 성향과 똑 닮은 소울메이트 식물 찾기</p>
+
+    <!-- 설문 영역 -->
+    <div id="quiz-container"></div>
+
+    <!-- 결과 영역 -->
+    <div id="result-container" class="result-box">
+        <h2 id="r-mbti" class="mbti-title"></h2>
+        <div id="r-plant" class="plant-name"></div>
+        <p id="r-desc"></p>
+        <div class="succulent-box">
+            <strong>🌵 추천 다육식물 3종</strong>
+            <ul id="r-succulents" style="padding-left: 20px; margin-top: 10px;"></ul>
+        </div>
+        <button class="btn-restart" onclick="location.reload()">테스트 다시하기</button>
+    </div>
+</div>
+
+<script>
+    // 1. 질문 데이터 (가중치 적용: 1번 질문군 1.2점, 2번 질문군 1.0점)
+    const questions = [
+        { id: 'E/I_1', q: 'Q1. 드디어 기다리던 주말! 나의 힐링 계획은?', 
+          a: { text: '포근한 방콕형: 조용한 내 방에서 새 잎을 보며 쉰다.', type: 'I', score: 1.2 }, 
+          b: { text: '설레는 외출형: 식물 카페나 화원에 가서 수다를 떤다.', type: 'E', score: 1.2 } },
+        { id: 'E/I_2', q: 'Q2. 우리 식물이 멋진 새 잎을 뿅 보여줬을 때 나는?', 
+          a: { text: '행복한 자랑형: 얼른 사진을 찍어 SNS나 단톡방에 올린다.', type: 'E', score: 1.0 }, 
+          b: { text: '소중한 소장형: 사진을 찍어두고 마음이 지칠 때 꺼내 본다.', type: 'I', score: 1.0 } },
+        { id: 'S/N_1', q: 'Q3. 내가 꿈꾸는 정원은 어떤 모습인가요?', 
+          a: { text: '알찬 정원: 키우기 쉽고 실용적인 정원', type: 'S', score: 1.2 }, 
+          b: { text: '비밀 정원: 독특하고 희귀한 식물이 가득한 정글', type: 'N', score: 1.2 } },
+        { id: 'S/N_2', q: 'Q4. 화원에서 내 눈길을 사로잡는 것은?', 
+          a: { text: '친절한 설명서: 난이도가 적힌 단정한 가이드', type: 'S', score: 1.0 }, 
+          b: { text: '묘한 분위기: 상상력을 자극하는 독특한 수형', type: 'N', score: 1.0 } },
+        { id: 'T/F_1', q: 'Q5. 식물이 갑자기 시들해졌을 때, 나의 첫 반응은?', 
+          a: { text: '원인 분석형: 흙 상태와 환경부터 꼼꼼히 체크한다.', type: 'T', score: 1.2 }, 
+          b: { text: '마음 토닥형: 어디가 아픈지 속상한 마음이 먼저 든다.', type: 'F', score: 1.2 } },
+        { id: 'T/F_2', q: 'Q6. 식물이 아파서 속상해하는 친구를 보았을 때 나는?', 
+          a: { text: '해결책 제시: "통풍이 안 돼서 그럴 수 있어. 옮겨볼까?"', type: 'T', score: 1.0 }, 
+          b: { text: '공감과 위로: "정성껏 키웠는데 속상하겠다. 네 잘못 아니야."', type: 'F', score: 1.0 } },
+        { id: 'J/P_1', q: 'Q7. 새로 입양할 식물을 고를 때, 나의 모습은?', 
+          a: { text: '계획적인 집사: 환경에 맞는지 미리 알아보고 데려온다.', type: 'J', score: 1.2 }, 
+          b: { text: '운명적인 집사: 눈에 쏙 들어오는 친구를 즉흥적으로 데려온다.', type: 'P', score: 1.2 } },
+        { id: 'J/P_2', q: 'Q8. 평소 식물에게 물을 줄 때, 나의 스타일은?', 
+          a: { text: '알람형 집사: 요일을 정해두고 규칙적으로 물을 준다.', type: 'J', score: 1.0 }, 
+          b: { text: '교감형 집사: 눈길이 머물 때, 잎이 처진 것 같으면 준다.', type: 'P', score: 1.0 } }
+    ];
+
+    // 2. 결과 데이터 (16개 유형)
+    const resultsData = {
+        "INTJ": { name: "알로카시아 프라이덱 무늬종", desc: "독립적이고 계획적이며 까다로운 환경 설계를 즐기는 전략가형 집사님!", succ: ["로즈흑법사", "운돌라타", "방울복랑금"] },
+        "INTP": { name: "아미드리움 미디엄 실버", desc: "자유로운 탐구와 식물의 독특한 기믹 관찰을 선호하는 아이디어형 집사님!", succ: ["축전", "대능주 철화", "은월"] },
+        "ENTJ": { name: "몬스테라 타이 별자리", desc: "효율성을 중시하며 성과 중심의 든든한 성장을 선호하는 리더형 집사님!", succ: ["귀면각", "길상천", "장자무장야"] },
+        "ENTP": { name: "몬스테라 알보", desc: "예측 불가능한 무늬 변화와 스릴을 즐기는 창의적인 토론가형 집사님!", succ: ["하월시아", "천금장", "오베사"] },
+        "INFJ": { name: "필로덴드론 스피리투스 상티", desc: "신비롭고 차분하며 깊은 교감과 사색을 전하는 조용한 옹호자형 집사님!", succ: ["기천", "백도선", "연봉"] },
+        "INFP": { name: "필로덴드론 핑크 공주", desc: "감수성이 풍부하며 섬세한 사랑과 정서적 치유를 지향하는 중재자형 집사님!", succ: ["버날렌스", "춘맹", "웅동자"] },
+        "ENFJ": { name: "필로덴드론 플로리다 뷰티", desc: "주변을 밝히는 긍정 에너지와 적응력을 가진 주인공형 집사님!", succ: ["일월금", "퍼플딜라이트", "흑법사"] },
+        "ENFP": { name: "필로덴드론 불의 고리", desc: "역동적이고 화려하며 끊임없는 생기를 추구하는 활동가형 집사님!", succ: ["라디칸스", "호빗", "아가보이데스"] },
+        "ISTJ": { name: "필로덴드론 블랙 카디널", desc: "단정하고 규칙적이며 흐트러짐 없는 강인함을 선호하는 현실주의 집사님!", succ: ["성미인", "보초", "산세베리아"] },
+        "ISFJ": { name: "싱고니움 레드 스팟 트리컬러", desc: "조용히 배려하고 무던하게 공기정화 혜택을 주는 수호자형 집사님!", succ: ["고스티", "백모단", "옥선"] },
+        "ESTJ": { name: "필로덴드론 벌 마르크스 무늬종", desc: "시원시원하고 결과 중심적이며 가치를 추구하는 경영자형 집사님!", succ: ["돈나무/염좌", "프리티", "보초금"] },
+        "ESFJ": { name: "에피프레넘 피나텀 무늬종", desc: "누구에게나 친절하고 어디서든 조화롭게 어우러지는 사교형 집사님!", succ: ["거미줄바위솔", "홍옥", "청옥"] },
+        "ISTP": { name: "몬스테라 아단소니 무늬종", desc: "공학적인 구조미와 기하학적 수형을 즐기는 쿨한 장인형 집사님!", succ: ["자태양", "란봉옥", "녹영"] },
+        "ISFP": { name: "콜로카시아 레몬 라임 게코", desc: "자연스러운 흐름을 사랑하며 피드백이 즉각적인 예술가형 집사님!", succ: ["오로라", "선로즈", "희성미인"] },
+        "ESTP": { name: "필로덴드론 빌리에티아", desc: "공간을 장악하는 압도적인 존재감을 지향하는 활동가형 집사님!", succ: ["알바", "피시본", "청법사"] },
+        "ESFP": { name: "무사 플로리다 바나나 무늬종", desc: "즉흥적이고 활발하며 무대를 가득 채우는 화려한 연예인형 집사님!", succ: ["리톱스", "은월", "홍매화"] }
+    };
+
+    // 3. 점수 저장 객체
+    let scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+    let currentStep = 0;
+
+    const quizContainer = document.getElementById('quiz-container');
+
+    // 4. 질문 렌더링 함수
+    function renderQuestion() {
+        if (currentStep >= questions.length) {
+            showResult();
+            return;
+        }
+        
+        const qData = questions[currentStep];
+        quizContainer.innerHTML = `
+            <div class="question-box active">
+                <div class="q-title">${qData.q}</div>
+                <button class="btn-answer" onclick="selectAnswer('${qData.a.type}', ${qData.a.score})">${qData.a.text}</button>
+                <button class="btn-answer" onclick="selectAnswer('${qData.b.type}', ${qData.b.score})">${qData.b.text}</button>
+            </div>
+        `;
+    }
+
+    // 5. 답변 선택 및 점수 합산 로직
+    function selectAnswer(type, score) {
+        scores[type] += score;
+        currentStep++;
+        renderQuestion();
+    }
+
+    // 6. 결과 계산 및 출력 함수
+    function showResult() {
+        quizContainer.style.display = 'none';
+        document.getElementById('result-container').style.display = 'block';
+
+        // 유형 판별 (동점 방지 가중치 덕분에 크기 비교가 명확함)
+        const mbti = 
+            (scores.E > scores.I ? "E" : "I") +
+            (scores.S > scores.N ? "S" : "N") +
+            (scores.T > scores.F ? "T" : "F") +
+            (scores.J > scores.P ? "J" : "P");
+
+        const result = resultsData[mbti];
+
+        document.getElementById('r-mbti').innerText = mbti;
+        document.getElementById('r-plant').innerText = result.name;
+        document.getElementById('r-desc').innerText = result.desc;
+        
+        const succList = document.getElementById('r-succulents');
+        succList.innerHTML = '';
+        result.succ.forEach(item => {
+            const li = document.createElement('li');
+            li.innerText = item;
+            succList.appendChild(li);
+        });
+    }
+
+    // 시작
+    renderQuestion();
+</script>
+</body>
+</html>
