@@ -14,131 +14,121 @@
 <body class="bg-emerald-950 min-h-screen flex items-center justify-center p-2 sm:p-4">
 
     <!-- 스마트폰 목업 프레임 -->
-    <main class="w-full max-w-sm bg-stone-50 rounded-[3rem] shadow-2xl overflow-hidden border-4 border-emerald-900 min-h-[680px] h-[680px] flex flex-col justify-between relative select-none">
+    <main class="w-full max-w-sm bg-stone-50 rounded-[3rem] shadow-2xl overflow-hidden border-4 border-emerald-900 h-[720px] flex flex-col justify-between relative select-none">
         
-        <!-- ==========================================
-             1. 커버 화면 (이미지 대치 및 전체 터치 시작)
-             ========================================== -->
-        <section id="screen-start" onclick="startTest()" class="flex flex-col justify-between h-full cursor-pointer relative select-none bg-cover bg-center transition active:scale-[0.99]" style="background-image: url('Gemini_Generated_Image_opdrl7opdrl7opdr_2.png');">
-            <!-- 이미지가 모든 UI 디자인을 포함하므로 빈 컨테이너로 영역 및 클릭 이벤트 유지 -->
-        </section>
+        <!-- 컨텐츠 영역 (스크린별 전환) -->
+        <div class="flex-1 overflow-hidden relative flex flex-col">
+            
+            <!-- ==========================================
+                 1. 커버 화면 (Start)
+                 ========================================== -->
+            <section id="screen-start" class="screen-view flex flex-col justify-between h-full cursor-pointer relative select-none bg-cover bg-center transition active:scale-[0.99]" style="background-image: url('https://jykmh7030-alt.github.io/smartmbti/Gemini_Generated_Image_opdrl7opdrl7opdr_2.png');" onclick="startTest()">
+            </section>
 
-        <!-- ==========================================
-             2. 질문 화면
-             ========================================== -->
-        <section id="screen-question" class="hidden flex-col justify-between h-full p-6 bg-white">
-            <!-- 상단 제목 및 부제목 -->
-            <div class="text-center pt-3 mb-2">
-                <h2 class="text-xl font-black text-emerald-950 tracking-tight">스마트 AI 식물 MBTI</h2>
-                <p class="text-xs sm:text-sm text-emerald-600 font-bold mt-1">나의 성향과 꼭 닮은 소울메이트 식물 찾기</p>
-            </div>
-
-            <!-- 중앙: 질문 및 답변 -->
-            <div class="my-auto space-y-6 py-2">
-                <div class="text-center space-y-2.5">
-                    <span id="question-number-badge" class="inline-block bg-emerald-100 text-emerald-800 text-xs font-black px-3.5 py-1 rounded-full border border-emerald-200">
-                        Q1
-                    </span>
-                    <h3 id="question-text" class="text-base sm:text-lg font-bold text-stone-800 leading-relaxed break-keep px-1">
-                        질문이 여기에 표시됩니다.
-                    </h3>
+            <!-- ==========================================
+                 2. 질문 화면 (Question)
+                 ========================================== -->
+            <section id="screen-question" class="screen-view hidden flex-col justify-between h-full p-6 bg-white">
+                <div class="text-center pt-4 mb-2">
+                    <h2 class="text-2xl font-black text-emerald-950 tracking-tight">스마트 AI 식물 MBTI</h2>
+                    <p class="text-sm sm:text-base text-emerald-600 font-bold mt-1">나의 성향과 꼭 닮은 소울메이트 식물 찾기</p>
                 </div>
 
-                <div class="space-y-3.5">
-                    <button onclick="selectOption('A')" id="btn-a" class="w-full text-left bg-emerald-50/40 hover:bg-emerald-100/70 hover:border-emerald-500 border border-emerald-200/80 text-stone-800 font-medium p-4 rounded-2xl text-xs sm:text-sm transition duration-150 leading-relaxed shadow-sm">
-                        선택지 A
-                    </button>
-                    <button onclick="selectOption('B')" id="btn-b" class="w-full text-left bg-emerald-50/40 hover:bg-emerald-100/70 hover:border-emerald-500 border border-emerald-200/80 text-stone-800 font-medium p-4 rounded-2xl text-xs sm:text-sm transition duration-150 leading-relaxed shadow-sm">
-                        선택지 B
-                    </button>
-                </div>
-            </div>
+                <div class="my-auto space-y-6 py-2">
+                    <div class="text-center space-y-3">
+                        <!-- Q는 질문보다 크게 검정색으로 배치 -->
+                        <div id="question-number-badge" class="text-3xl sm:text-4xl font-black text-black tracking-tight">
+                            Q1
+                        </div>
+                        <h3 id="question-text" class="text-base sm:text-lg font-bold text-stone-800 leading-relaxed break-keep px-2">
+                            질문이 여기에 표시됩니다.
+                        </h3>
+                    </div>
 
-            <!-- 하단: 상태바 (진행) -->
-            <div class="pb-2">
-                <div class="flex justify-between text-xs font-bold text-emerald-700 mb-1.5">
-                    <span>진행</span>
-                    <span id="progress-text">1 / 16</span>
+                    <div class="space-y-4">
+                        <button onclick="selectOption('A')" id="btn-a" class="w-full text-left bg-emerald-50/50 hover:bg-emerald-100/80 hover:border-emerald-600 border border-emerald-200 text-stone-900 font-semibold p-4.5 rounded-2xl text-sm sm:text-base transition duration-150 leading-relaxed shadow-sm">
+                            선택지 A
+                        </button>
+                        <button onclick="selectOption('B')" id="btn-b" class="w-full text-left bg-emerald-50/50 hover:bg-emerald-100/80 hover:border-emerald-600 border border-emerald-200 text-stone-900 font-semibold p-4.5 rounded-2xl text-sm sm:text-base transition duration-150 leading-relaxed shadow-sm">
+                            선택지 B
+                        </button>
+                    </div>
                 </div>
-                <div class="w-full bg-emerald-100 h-2.5 rounded-full overflow-hidden">
-                    <div id="progress-bar" class="bg-emerald-600 h-full w-[6.25%] transition-all duration-300"></div>
+
+                <div class="pb-3">
+                    <div class="flex justify-between text-xs sm:text-sm font-bold text-emerald-700 mb-1.5">
+                        <span>진행률</span>
+                        <span id="progress-text">1 / 16</span>
+                    </div>
+                    <div class="w-full bg-emerald-100 h-3 rounded-full overflow-hidden">
+                        <div id="progress-bar" class="bg-emerald-600 h-full w-[6.25%] transition-all duration-300"></div>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- ==========================================
-             3. 로딩 화면
-             ========================================== -->
-        <section id="screen-loading" class="hidden flex-col items-center justify-center h-full p-6 text-center space-y-4 bg-white">
-            <div class="w-12 h-12 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin"></div>
-            <div>
-                <h3 class="text-emerald-900 font-bold text-base">16가지 성향 정밀 분석 중</h3>
-                <p class="text-xs text-emerald-600/70 mt-1">당신과 닮은 다육이/선인장을 찾는 중입니다...</p>
-            </div>
-        </section>
-
-        <!-- ==========================================
-             4. 결과 화면 (다시 시작하기 / 종료 버튼)
-             ========================================== -->
-        <section id="screen-result" class="hidden flex-col justify-between h-full p-6 bg-stone-50 overflow-y-auto">
-            <div class="text-center pt-2 space-y-2">
-                <span id="result-mbti" class="bg-emerald-700 text-white font-black text-xs px-3.5 py-1 rounded-full tracking-wider uppercase shadow-sm">
-                    ISTP
-                </span>
-                <div id="result-icon" class="text-5xl my-1">🌵</div>
+            <!-- ==========================================
+                 3. 로딩 화면 (Loading)
+                 ========================================== -->
+            <section id="screen-loading" class="screen-view hidden flex-col items-center justify-center h-full p-6 text-center space-y-5 bg-white">
+                <div class="w-14 h-14 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin"></div>
                 <div>
-                    <h2 id="result-name" class="text-xl font-black text-emerald-950">스투키</h2>
-                    <p id="result-subtitle" class="text-xs text-emerald-700 font-semibold mt-0.5 break-keep">"무심한 듯 혼자서도 잘 사는 마이웨이"</p>
+                    <h3 class="text-emerald-950 font-bold text-lg">16가지 성향 정밀 분석 중</h3>
+                    <p class="text-sm text-emerald-700 mt-1.5">다육식물과 인기 관엽식물 속 소울메이트 찾는 중...</p>
                 </div>
-            </div>
+            </section>
 
-            <div class="my-3 space-y-2">
-                <div id="result-desc" class="bg-white p-3.5 rounded-2xl text-xs text-stone-700 leading-relaxed border border-emerald-100 shadow-sm break-keep">
-                    설명
+            <!-- ==========================================
+                 4. 결과 화면 (Result)
+                 ========================================== -->
+            <section id="screen-result" class="screen-view hidden flex-col justify-between h-full p-6 bg-stone-50 overflow-y-auto">
+                <div class="text-center pt-2 space-y-2">
+                    <span id="result-mbti" class="inline-block bg-emerald-700 text-white font-black text-sm px-4 py-1.5 rounded-full tracking-wider uppercase shadow-sm">
+                        ISTP
+                    </span>
+                    <div class="my-2 flex flex-col items-center">
+                        <img id="result-img" src="" alt="식물 이미지" class="w-32 h-32 sm:w-36 sm:h-36 object-cover rounded-2xl shadow-md border-2 border-emerald-300">
+                    </div>
+                    <div>
+                        <h2 id="result-name" class="text-xl font-black text-emerald-950">스투키</h2>
+                        <p id="result-subtitle" class="text-sm text-emerald-800 font-bold mt-1 break-keep">"무심한 듯 혼자서도 잘 사는 마이웨이"</p>
+                    </div>
                 </div>
-                <div class="bg-emerald-50/80 p-3 rounded-2xl text-[11px] text-emerald-900 border border-emerald-200/60 break-keep">
-                    <span class="font-bold text-emerald-800">💡 키우기 팁:</span> <span id="result-tip">관리 팁</span>
+
+                <div class="my-3 space-y-3">
+                    <div id="result-desc" class="bg-white p-4 rounded-2xl text-xs sm:text-sm text-stone-800 leading-relaxed border border-emerald-200 shadow-sm break-keep">
+                        설명
+                    </div>
+                    <div class="bg-emerald-50 p-3.5 rounded-2xl text-xs text-emerald-950 border border-emerald-200 break-keep">
+                        <span class="font-bold text-emerald-900">💡 키우기 팁:</span> <span id="result-tip">관리 팁</span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="space-y-2 pt-2 pb-2">
-                <button onclick="startTest()" class="w-full bg-emerald-700 hover:bg-emerald-800 active:scale-95 text-white font-bold py-3 rounded-xl shadow text-xs transition">
-                    🔄 다시 시작하기
-                </button>
-                <button onclick="exitTest()" class="w-full bg-stone-200 hover:bg-stone-300 active:scale-95 text-stone-700 font-bold py-3 rounded-xl text-xs transition">
-                    🚪 테스트 종료
-                </button>
-            </div>
-        </section>
+                <div class="space-y-2 pt-2 pb-2">
+                    <button onclick="startTest()" class="w-full bg-emerald-700 hover:bg-emerald-800 active:scale-95 text-white font-bold py-3.5 rounded-xl shadow text-sm transition">
+                        🔄 다시 시작하기
+                    </button>
+                    <button onclick="exitProgram()" class="w-full bg-stone-200 hover:bg-stone-300 active:scale-95 text-stone-800 font-bold py-3.5 rounded-xl text-sm transition">
+                        ❌ 종료
+                    </button>
+                </div>
+            </section>
 
-        <!-- ==========================================
-             5. 종료 화면
-             ========================================== -->
-        <section id="screen-exit" class="hidden flex-col items-center justify-center h-full p-6 text-center space-y-4 bg-emerald-950 text-white">
-            <div class="text-5xl">🪴</div>
-            <h2 class="text-xl font-bold">테스트가 종료되었습니다</h2>
-            <p class="text-xs text-emerald-300/80 leading-relaxed">
-                나만의 반려 식물과 함께<br>오늘도 푸르고 건강한 하루 되세요!
-            </p>
-            <button onclick="showScreen('start')" class="mt-4 bg-emerald-600 text-white text-xs font-bold px-6 py-2.5 rounded-full hover:bg-emerald-500 transition shadow">
-                처음으로 돌아가기
-            </button>
-        </section>
+        </div>
 
     </main>
 
     <script>
-        /* 16문항 데이터 (E/I, S/N, T/F, J/P 각 4문항) */
+        /* 16문항 데이터 */
         const questions = [
             { q: "주말에 가장 완벽한 휴식을 취하는 방법은?", a: { text: "햇살 밝은 카페나 야외로 나아가 에너지 얻기", type: "E" }, b: { text: "아늑한 방 안에서 혼자만의 조용한 시간 갖기", type: "I" } },
             { q: "식물을 놓을 공간을 선택할 때 먼저 고려하는 것은?", a: { text: "사람들의 눈길이 잘 닿는 화사한 거실", type: "E" }, b: { text: "나만의 손길과 시선만 닿는 아늑한 개인 공간", type: "I" } },
             { q: "많은 사람들과의 모임이 끝난 후 나의 상태는?", a: { text: "여운이 남아 더 수다를 떨고 싶다", type: "E" }, b: { text: "에너지가 고갈되어 즉시 혼자 쉬고 싶다", type: "I" } },
             { q: "낯선 모임에 들어갔을 때 나는?", a: { text: "먼저 인사를 건네며 적극적으로 분위기를 이끈다", type: "E" }, b: { text: "조용히 분위기를 관망하며 상황을 파악한다", type: "I" } },
 
-            { q: "새로운 다육이/선인장을 고를 때 끌리는 기준은?", a: { text: "단정하고 깔끔하며 튼튼해 보이는 정석 형태", type: "S" }, b: { text: "독특하고 오묘해서 특이한 느낌을 주는 수형", type: "N" } },
+            { q: "새로운 반려식물을 고를 때 끌리는 기준은?", a: { text: "단정하고 깔끔하며 튼튼해 보이는 정석 형태", type: "S" }, b: { text: "독특하고 오묘해서 특이한 느낌을 주는 수형", type: "N" } },
             { q: "식물이 자라는 과정을 볼 때 즐거운 순간은?", a: { text: "매일 조금씩 줄기가 굵어지는 실제 관찰", type: "S" }, b: { text: "앞으로 어떤 신비로운 모양으로 변신할지 상상할 때", type: "N" } },
             { q: "식물 키우기 가이드북을 읽을 때 나의 스타일은?", a: { text: "적혀진 수치와 물주기 주기를 정석대로 완벽히 이수", type: "S" }, b: { text: "핵심 원리만 이해하고 내 직관대로 변형 적용", type: "N" } },
-            { q: "선인장의 날카로운 가시를 보며 드는 생각은?", a: { text: "가시에 찔리지 않도록 다룰 때 조심해야겠다", type: "S" }, b: { text: "가뭄을 견디기 위한 수백만 년 진화의 훈장이구나", type: "N" } },
+            { q: "식물의 독특한 생김새를 보며 드는 생각은?", a: { text: "공간에 실용적으로 잘 어울리는지 실속을 따진다", type: "S" }, b: { text: "자연의 신비롭고 거대한 세계관을 떠올린다", type: "N" } },
 
             { q: "반려식물을 내 공간에 들이기로 한 결정적 이유는?", a: { text: "공기 정화, 전자파 차단 등 명확하고 실용적인 기능", type: "T" }, b: { text: "보고만 있어도 마음이 따뜻해지는 감성적 위로", type: "F" } },
             { q: "식물 잎이 살짝 시들어 보일 때 나의 첫 행동은?", a: { text: "수분/통풍 상태를 체크하고 원인 분석 후 조치", type: "T" }, b: { text: "마음이 아파서 안절부절못하며 걱정함", type: "F" } },
@@ -151,32 +141,35 @@
             { q: "분갈이를 시작할 때 나의 준비 자세는?", a: { text: "필요한 흙, 마사토, 도구를 완벽히 세팅 후 시작", type: "J" }, b: { text: "일단 화분을 엎어보고 필요한 건 중간중간 찾음", type: "P" } }
         ];
 
-        /* 16가지 다육/선인장 DB */
+        /* 비선인장 다육식물(12가지) + 인기 관엽식물(4가지) 매칭 DB */
         const plantDB = {
-            "ISTJ": { name: "금호 선인장", icon: "🌵", sub: "규칙적이고 단단한 황금빛 완벽주의자", desc: "정교한 황금빛 가시 줄과 구형을 유지하는 식물계의 원칙주의자입니다.", careTip: "정해진 일조량과 규칙적인 통풍이 필수입니다." },
-            "ISTP": { name: "스투키", icon: "🎍", sub: "무심한 듯 혼자서도 쿨하게 살아남는 마이웨이", desc: "물이나 햇빛을 자주 안 줘도 건조함을 견디며 최고 생존력을 자랑합니다.", careTip: "자주 건드리지 않는 것이 최고의 관리법입니다." },
-            "INTJ": { name: "투구 선인장", icon: "🛡️", sub: "가시 없이 완벽한 대칭을 이루는 전략가", desc: "가시 대신 정교한 점무늬와 대칭 구조로 자신을 보호하는 지성파입니다.", careTip: "습기에 민감하므로 과습을 주의하세요." },
-            "INTP": { name: "리톱스", icon: "🪨", sub: "돌인 척 위장하고 조용히 탈피하는 반전 학자", desc: "평소엔 자갈처럼 위장하다 때가 되면 꽃을 피우는 매력쟁이입니다.", careTip: "탈피 기간에는 물주기를 멈추세요." },
-            "ISFJ": { name: "웅동자", icon: "🐻", sub: "부드러운 솜털로 보듬어주는 다정한 힐러", desc: "아기 곰 발바닥을 닮은 푹신한 잎으로 포근한 온기를 전합니다.", careTip: "잎에 직접 물이 닿지 않게 주의하세요." },
-            "ISFP": { name: "청옥", icon: "🍃", sub: "유연하게 흘러내리는 자유로운 영혼의 예술가", desc: "동글동글한 잎들이 포도송이처럼 자연스럽고 감성적으로 늘어집니다.", careTip: "행잉 화분에 걸어 자유롭게 늘어뜨리세요." },
-            "INFJ": { name: "옵투사", icon: "💎", sub: "투명한 창으로 빛을 모으는 신비한 사색가", desc: "잎 끝의 투명한 창으로 빛을 깊숙이 모아들이는 신비로운 식물입니다.", careTip: "은은한 창가 반음지를 가장 좋아합니다." },
-            "INFP": { name: "축전", icon: "💖", sub: "하트 잎 속에서 낭만적인 꽃을 피우는 꿈꾸는 이", desc: "하트 모양 몸체에서 계절이 오면 황홀한 꽃을 터뜨립니다.", careTip: "탈피 기간 동안 스스로 허물을 벗을 때까지 기다려주세요." },
-            "ESTJ": { name: "귀면각", icon: "🏛️", sub: "흔들림 없이 수직으로 곧게 뻗는 신뢰의 리더", desc: "하늘을 향해 단단한 기둥 모양으로 곧게 자라나는 리더형입니다.", careTip: "위로 높이 자라므로 단단한 화분에 고정하세요." },
-            "ESTP": { name: "백년초", icon: "🌵", sub: "어떤 척박한 땅도 정복하는 야생 개척자", desc: "강인한 생명력으로 추위와 가뭄을 거침없이 이겨내는 모험가입니다.", careTip: "야외의 강한 햇빛을 맞으면 더 단단해집니다." },
-            "ESFJ": { name: "염좌", icon: "🌳", sub: "풍성한 잎으로 번영과 복을 나누는 사교왕", desc: "도톰한 잎을 풍성하게 늘려가며 공간에 활력을 불어넣어 줍니다.", careTip: "가지치기를 해주면 굵은 목질화가 이루어집니다." },
-            "ESFP": { name: "개발나물 선인장", icon: "🌸", sub: "화려한 핑크빛 꽃을 폭발시키는 슈퍼 인싸", desc: "개화 시기가 오면 화려한 분홍 꽃을 쏟아내듯 피워내는 인싸입니다.", careTip: "꽃봉오리가 맺히면 화분 위치 이동을 자제하세요." },
-            "ENTJ": { name: "밍크 선인장", icon: "🦙", sub: "압도적인 아우라와 품격을 지닌 CEO", desc: "단단한 기둥 위에 고급스러운 백모를 쓰고 있어 독보적인 존재감을 줍니다.", careTip: "머리 백모에 먼지가 쌓이지 않게 관리하세요." },
-            "ENTP": { name: "용신목 철화", icon: "🧬", sub: "틀을 깨고 자유롭게 뻗어 나가는 독창적 변종", desc: "물결 모양으로 예측 불가능하게 돌연변이 성장하는 개성파입니다.", careTip: "자유로운 성장을 위해 넓은 화분을 사용하세요." },
-            "ENFJ": { name: "아가베 아테누아타", icon: "👑", sub: "우아한 잎으로 모두를 품는 대장 식물", desc: "가시 없이 매끄럽고 우아한 대형 잎을 크게 펼쳐내어 모두를 품습니다.", careTip: "통풍이 잘 되는 넓은 장소에 두세요." },
-            "ENFP": { name: "핑클루비", icon: "💎", sub: "햇살만 받으면 붉게 물드는 리액션 부자", desc: "햇볕을 받을수록 자줏빛으로 화려하게 색을 바꾸는 긍정 왕입니다.", careTip: "햇빛을 충분히 받을수록 물듦이 짙어집니다." }
+            /* 비선인장 다육식물 12가지 */
+            "ISTJ": { name: "라울", img: "https://images.unsplash.com/photo-1509587584294-0f4b74cdc10d?w=500&auto=format&fit=crop&q=60", sub: "투명하고 단정하게 물들어가는 원칙주의 다육이", desc: "햇살을 받으면 핑크빛 끝트머리가 사랑스럽게 물드는 단정하고 튼튼한 다육식물입니다.", careTip: "풍부한 햇볕과 통풍을 유지해주면 물듦이 더욱 예뻐집니다." },
+            "ISTP": { name: "스투키", img: "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?w=500&auto=format&fit=crop&q=60", sub: "무심한 듯 혼자서도 쿨하게 살아남는 마이웨이", desc: "물이나 햇빛을 자주 안 줘도 건조함을 견디며 최고 생존력을 자랑하는 다육식물입니다.", careTip: "자주 건드리지 않는 것이 최고의 관리법입니다." },
+            "INTJ": { name: "방울복랑", img: "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=500&auto=format&fit=crop&q=60", sub: "방울방울 동글한 잎을 쌓아 올리는 전략가", desc: "줄기 끝마다 방울토마토처럼 동글동글하고 귀여운 다육 잎을 로켓처럼 쌓아 올립니다.", careTip: "과습에 주의하며 겉흙이 바짝 마르면 물을 주세요." },
+            "INTP": { name: "리톱스", img: "https://images.unsplash.com/photo-1525498128493-380d1990a112?w=500&auto=format&fit=crop&q=60", sub: "돌인 척 위장하고 조용히 탈피하는 반전 학자", desc: "평소엔 자갈처럼 위장하다 때가 되면 새로운 몸을 꺼내는 독특한 다육식물입니다.", careTip: "탈피 기간에는 물주기를 완전히 멈추세요." },
+            "ISFJ": { name: "웅동자", img: "https://images.unsplash.com/photo-1512428559087-560fa5ceab42?w=500&auto=format&fit=crop&q=60", sub: "부드러운 솜털로 보듬어주는 다정한 힐러", desc: "아기 곰 발바닥을 닮은 푹신한 솜털 잎으로 포근한 온기를 전하는 다육식물입니다.", careTip: "잎에 직접 물이 닿지 않게 가장자리로 물을 주세요." },
+            "ISFP": { name: "청옥", img: "https://images.unsplash.com/photo-1463936575829-25148e1db1b8?w=500&auto=format&fit=crop&q=60", sub: "유연하게 흘러내리는 자유로운 영혼의 예술가", desc: "동글동글한 초록 잎들이 포도송이처럼 자연스럽고 감성적으로 늘어지는 다육식물입니다.", careTip: "행잉 화분에 걸어 자유롭게 늘어뜨리면 아름답습니다." },
+            "INFJ": { name: "옵투사", img: "https://images.unsplash.com/photo-1519336357729-3f048d085966?w=500&auto=format&fit=crop&q=60", sub: "투명한 창으로 빛을 모으는 신비한 사색가", desc: "잎 끝의 투명한 창으로 빛을 깊숙이 모아들이는 신비로운 소형 다육식물입니다.", careTip: "은은한 창가 반음지를 가장 좋아합니다." },
+            "INFP": { name: "축전", img: "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?w=500&auto=format&fit=crop&q=60", sub: "하트 잎 속에서 낭만적인 꽃을 피우는 꿈꾸는 이", desc: "하트 모양 몸체에서 계절이 오면 황홀한 꽃을 터뜨리는 감성 다육식물입니다.", careTip: "탈피 기간 동안 스스로 허물을 벗을 때까지 기다려주세요." },
+            "ESTJ": { name: "홍옥", img: "https://images.unsplash.com/photo-1453904300235-0f2f609c258a?w=500&auto=format&fit=crop&q=60", sub: "반짝이는 보석처럼 붉게 익어가는 실속파", desc: "햇볕을 받으면 투명한 붉은 보석 알갱이처럼 잎이 촘촘히 영그는 다육식물입니다.", careTip: "일조량이 부족하면 초록빛으로 변하므로 햇빛을 보여주세요." },
+            "ESTP": { name: "오팔리나", img: "https://images.unsplash.com/photo-1520302212614-765dfdbcdbcd?w=500&auto=format&fit=crop&q=60", sub: "오묘한 파스텔톤 분홍빛을 뽐내는 개척자", desc: "도톰한 잎 전체에 신비로운 백분과 파스텔 보랏빛이 감도는 에케베리아 다육식물입니다.", careTip: "잎에 묻은 백분이 지워지지 않도록 조심스럽게 다뤄주세요." },
+            "ESFJ": { name: "염좌", img: "https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=500&auto=format&fit=crop&q=60", sub: "풍성한 잎으로 번영과 복을 나누는 사교왕", desc: "도톰한 다육 잎을 풍성하게 늘려가며 공간에 활력을 불어넣어 주는 다육식물입니다.", careTip: "가지치기를 해주면 굵은 목질화가 이루어집니다." },
+            "ESFP": { name: "월토귀", img: "https://images.unsplash.com/photo-1508873696983-2df5c920ac3c?w=500&auto=format&fit=crop&q=60", sub: "토끼 귀를 닮은 뽀송한 인싸 다육이", desc: "토끼의 귀처럼 길쭉하고 보드라운 은빛 솜털 잎이 매력적인 인기 다육식물입니다.", careTip: "과습에 매우 주의하며 통풍이 원활한 곳에 두세요." },
+            
+            /* 인기 관엽식물 4가지 */
+            "ENTJ": { name: "몬스테라", img: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?w=500&auto=format&fit=crop&q=60", sub: "트렌디하고 압도적인 존재감을 뽐내는 인테리어 제왕", desc: "독특한 찢어진 잎으로 공간을 단숨에 플랜테리어 감성으로 채워주는 대표 관엽식물입니다.", careTip: "밝은 간접광과 통풍이 잘되는 곳을 좋아합니다." },
+            "ENTP": { name: "뱅갈 고무나무", img: "https://images.unsplash.com/photo-1545239351-ef35f43d514b?w=500&auto=format&fit=crop&q=60", sub: "세련된 무늬 잎으로 공간을 밝히는 감각파", desc: "초록빛과 밝은 노란빛이 조화로운 잎을 가진 가장 사랑받는 프리미엄 관엽나무입니다.", careTip: "겉흙이 마르면 물을 듬뿍 주고 햇빛을 보여주세요." },
+            "ENFJ": { name: "스파티필름", img: "https://images.unsplash.com/photo-1599598425947-440d7c716ce5?w=500&auto=format&fit=crop&q=60", sub: "하얀 꽃으로 온기를 전하는 다정한 평화주의자", desc: "우아한 백색 불염포 꽃과 싱그러운 잎으로 실내 공기정화 능력이 탁월한 인기 식물입니다.", careTip: "물을 좋아하므로 흙이 마르기 전에 물을 챙겨주세요." },
+            "ENFP": { name: "아레카 야자", img: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=500&auto=format&fit=crop&q=60", sub: "바람에 흔들리듯 시원하게 뻗어가는 청량한 분위기 메이커", desc: "풍성하고 부드러운 잎줄기가 이국적인 분위기를 연출하며 실내 습도 조절에도 뛰어납니다.", careTip: "건조하지 않도록 잎에 분무를 자주 해주세요." }
         };
 
         let currentIdx = 0;
         let scores = { E:0, I:0, S:0, N:0, T:0, F:0, J:0, P:0 };
 
         function showScreen(screenId) {
-            ['start', 'question', 'loading', 'result', 'exit'].forEach(id => {
-                const el = document.getElementById(`screen-${id}`);
+            ['screen-start', 'screen-question', 'screen-loading', 'screen-result'].forEach(id => {
+                const el = document.getElementById(id);
                 if (id === screenId) {
                     el.classList.remove('hidden');
                     el.classList.add('flex');
@@ -190,7 +183,7 @@
         function startTest() {
             currentIdx = 0;
             scores = { E:0, I:0, S:0, N:0, T:0, F:0, J:0, P:0 };
-            showScreen('question');
+            showScreen('screen-question');
             renderQuestion();
         }
 
@@ -221,7 +214,7 @@
         }
 
         function calculateAndShowResult() {
-            showScreen('loading');
+            showScreen('screen-loading');
 
             const mbti = 
                 (scores.E >= scores.I ? "E" : "I") +
@@ -234,17 +227,23 @@
 
                 document.getElementById('result-mbti').innerText = mbti;
                 document.getElementById('result-name').innerText = resultData.name;
-                document.getElementById('result-icon').innerText = resultData.icon;
+                document.getElementById('result-img').src = resultData.img;
                 document.getElementById('result-subtitle').innerText = `"${resultData.sub}"`;
                 document.getElementById('result-desc').innerText = resultData.desc;
                 document.getElementById('result-tip').innerText = resultData.careTip;
 
-                showScreen('result');
+                showScreen('screen-result');
             }, 1200);
         }
 
-        function exitTest() {
-            showScreen('exit');
+        function exitProgram() {
+            try {
+                window.close();
+            } catch (e) {
+                // 브라우저 정책상 창 닫기가 제한될 경우 처리
+            }
+            alert("프로그램이 종료되었습니다. 창을 닫아주세요.");
+            showScreen('screen-start');
         }
     </script>
 </body>
